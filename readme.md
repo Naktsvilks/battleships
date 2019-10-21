@@ -14,6 +14,11 @@ services:
     image: node:alpine
     volumes:
       - .:/app
+    working_dir: /app
+    command: npm run build:live
+    ports:
+      - 3000:3000
+
 ```
 
 Take the yml file above and write:  
