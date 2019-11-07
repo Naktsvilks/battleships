@@ -9,3 +9,33 @@ services:
     command: npm run build:live
     ports:
       - 3000:3000
+      - 9220:9220
+    networks:
+      - database
+
+  pg:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_PASSWORD: rabbits
+      POSTGRES_USER: battleships
+      POSTGRES_DB: battleships
+    networks:
+      - db_admin
+      - database
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - db_admin
+
+networks:
+  database:
+  db_admin:
+
+volumes:
+  database:

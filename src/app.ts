@@ -15,16 +15,17 @@ export default class App {
 
     private config(): void {
         this.app.use(json());
+        this.app.set('views', './src/views');
+        this.app.set('view engine', 'pug');
 
         const routeFiles = fs
             .readdirSync(path.resolve(process.cwd(), 'src/routes'))
-            .filter(file => file.endsWith('.ts') && !file.startsWith('base'));
+            .filter((file) => file.endsWith('.ts') && !file.startsWith('base'));
 
         for (const file of routeFiles) {
             const router: { default: BaseRouter } = require(`./routes/${file}`);
 
-            if (router.default)
-                this.app.use(router.default.path, router.default.router);
+            if (router.default) this.app.use(router.default.path, router.default.router);
         }
     }
 }

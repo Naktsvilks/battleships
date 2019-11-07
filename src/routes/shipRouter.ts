@@ -2,7 +2,7 @@ import { BaseRouter } from './baseRouter';
 import { ShipController } from '../controllers/ShipController';
 
 class ShipRouter extends BaseRouter {
-    public path: string = '/ship';
+    public path: string = '/';
     protected controller: ShipController = new ShipController();
 
     constructor() {

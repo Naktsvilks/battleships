@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "pg",
+  "port": 5432,
+  "username": "battleships",
+  "password": "rabbits",
+  "database": "battleships",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/**/entities/*.ts"],
+  "migrations": ["src/migrations/**/*.ts"],
+  "migrationsTableName": "migrations",
+  "subscribers": ["src/subscribers/**/*.ts"]
+}
