@@ -12,3 +12,13 @@ body
       .form-group.mx-sm-3.mb-2
         input#coordinates.form-control(type='text', placeholder='Coordinates')
       button.btn.btn-primary.mb-2(type='submit') Submit
+  script.
+    websocket = new WebSocket('ws://localhost:8000');
+    
+    websocket.onopen = function(event) {
+    websocket.send('Sending text to server!');
+    };
+    
+    websocket.onmessage = function(event) {
+    console.log(event.data);
+    };

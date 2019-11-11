@@ -19,7 +19,7 @@ export class Game extends BaseEntity {
     @Column({ nullable: true })
     public key!: string;
 
-    @OneToOne((type) => Board, { cascade: true })
+    @OneToOne((type) => Board, { cascade: true, eager: true })
     @JoinColumn()
     public board!: Board;
 

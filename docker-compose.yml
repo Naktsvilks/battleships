@@ -1,4 +1,4 @@
-version: "3.5"
+version: '3.5'
 
 services:
   node:
@@ -9,6 +9,7 @@ services:
     command: npm run build:live
     ports:
       - 3000:3000
+      - 8000:8000
       - 9220:9220
     networks:
       - database

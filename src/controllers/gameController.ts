@@ -14,7 +14,7 @@ export class GameController {
             return response.render('game', { message: 'Game not found!' });
         }
 
-        return response.render('game', { message: `Game found! ${game.id}` });
+        return response.render('game', { message: `Game found! ${game.id}`, board: this.service.renderGame(game) });
     }
 
     public async createGame(request: Request, response: Response) {

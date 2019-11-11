@@ -1,4 +1,4 @@
 export interface ICoordinate {
-    row: string;
-    column: number;
+    x: number;
+    y: number;
 }
