@@ -8,16 +8,13 @@ class GameRouter extends BaseRouter {
     protected route(): void {
         this.router
             .route('')
-            .get((req, res) => {
-                res.render('index', { title: 'Hey!', message: 'You fookin wot m8?' });
-            })
-            .post((req, res) => {
-                return this.controller.createGame(req, res);
-            });
+            .get((req, res) => this.controller.renderDummy(req, res))
+            .post((req, res) => this.controller.createGame(req, res));
 
-        this.router.route('/:gameKey').get((req, res) => {
-            return this.controller.getGame(req, res);
-        });
+        this.router
+            .route('/:gameKey')
+            .get((req, res) => this.controller.getGame(req, res))
+            .post((req, res) => this.controller.takeShot(req, res));
     }
 }
 

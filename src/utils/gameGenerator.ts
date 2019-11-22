@@ -3,7 +3,7 @@ import { IBoard } from '../interfaces/board';
 import { IShip } from '../interfaces/ship';
 
 export class GameGenerator {
-    protected boardArr: boolean[][];
+    protected boardArr: number[][];
     protected size: number;
 
     constructor(size: number) {
@@ -11,9 +11,9 @@ export class GameGenerator {
         this.boardArr = [];
 
         for (var x = 0; x < size; x++) {
-            const toPush: boolean[] = [];
+            const toPush: number[] = [];
             for (var y = 0; y < size; y++) {
-                toPush[y] = false;
+                toPush[y] = 0;
             }
             this.boardArr.push(toPush);
         }
@@ -82,17 +82,30 @@ export class GameGenerator {
     }
 
     protected checkCollision(shipSize: number, x: number, y: number, heading: 'horizontal' | 'vertical'): boolean {
-        const check: boolean[][] = JSON.parse(JSON.stringify(this.boardArr));
+        const check: number[][] = JSON.parse(JSON.stringify(this.boardArr));
 
         for (var s = 0; s < shipSize; s++) {
             try {
-                if (this.checkBoard(this.boardArr, x, y)) {
+                if (this.checkBoard(x, y)) {
                     return true;
-                } else {
-                    if (heading === 'horizontal') x++;
-                    else y++;
                 }
-                check[x][y] = true;
+
+                const rows = check.length;
+                if (rows > 0) {
+                    const columns = check[0].length;
+                    for (var i = Math.max(0, x - 1); i < Math.min(x + 2, columns); i++) {
+                        for (var j = Math.max(0, y - 1); j < Math.min(y + 2, rows); j++) {
+                            if (this.boardArr[i][j] === 2)
+                                throw `Ships collided. checkBoard is borked and returned ${this.checkBoard(x, y)}`;
+
+                            if (i === x && j === y) check[i][j] = 2;
+                            else if (check[i][j] === 0) check[i][j] = 1;
+                        }
+                    }
+                }
+
+                if (heading === 'horizontal') x++;
+                else y++;
             } catch (exception) {
                 console.error(`X: ${x}, Y: ${y}, s: ${s}, shipSize: ${shipSize}`, exception);
                 return true;
@@ -102,34 +115,20 @@ export class GameGenerator {
         return false;
     }
 
-    protected checkBoard(board: Boolean[][], x: number, y: number) {
-        const rows = board.length;
-        if (rows > 0) {
-            const columns = board[0].length;
-            for (var i = Math.max(0, x - 1); i < Math.min(x + 1, rows); i++) {
-                for (var j = Math.max(0, y - 1); j < Math.min(j + 1, columns); j++) {
-                    if (board[i][j]) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+    protected checkBoard(x: number, y: number): boolean {
+        return this.boardArr[x][y] > 0;
     }
 
-    protected commitShip(check: boolean[][]): void {
-        const diff: string[] = [];
+    protected commitShip(check: number[][]): void {
+        const diff: { x: number; y: number; value: number }[] = [];
 
         this.boardArr.forEach((origRow, x) => {
             origRow.forEach((origCol, y) => {
-                if (origCol != check[x][y]) {
+                if (check[x][y] != origCol) {
                     this.boardArr[x][y] = check[x][y];
-                    diff.push(`X: ${x}, Y: ${y}, Value: ${check[x][y]}`);
+                    diff.push({ x, y, value: check[x][y] });
                 }
             });
         });
-
-        console.log(diff);
     }
 }

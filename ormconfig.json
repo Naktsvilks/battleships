@@ -7,7 +7,7 @@
   "database": "battleships",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/**/entities/*.ts"],
+  "entities": ["src/entities/*.ts"],
   "migrations": ["src/migrations/**/*.ts"],
   "migrationsTableName": "migrations",
   "subscribers": ["src/subscribers/**/*.ts"]
